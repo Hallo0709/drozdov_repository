@@ -1,44 +1,52 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title><i>Product Reviews</i></title>
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans">
-    <link rel="stylesheet" type="text/css" href="css/master.css">
-  </head>
-  <body>
-		
-  </body>
+    <head>
+        <meta charset="utf-8">
+        <title>The Best Atom Packages for Front End Devs</title>
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans">
+        <link rel="stylesheet" href="css/master.css">
+    </head>
+    <body>
     <header>
-        <h1>Product Reviews</h1>
-        <h2 id="greeting"></h2>
-    </header>
-        <main>
-            <figure>
-        <img src="images/kurapika.jpg" alt="Hashira Clothing"
-        <figcaption>
-            Hashira Studios - <span>One of my personal favorite clothing brands</span>
-        </figcaption>
-    </figure>
-    <p id="product-description">
-        Hashira Studios is a sleek and unique line of anime style merch that has subtle hints towards different shows/moves, and unlike other clothes, they are subtle and clean, as well as made of great material.
-    </p>
-    <p>Price: $<span id="price"></span></p>
-    <p>Student Price: $<span id ="student-price"></span></p>
-
-    <h2>User Reviews</h2>
-    <div class = review>
-        <h3>Shauntia H.</h3>
-        <p>My hoodie never came, and my friend got his before me and he ordered his later :(</p>
+        <h1>The Best Atom Packages for Front End Devs</h1>
+        <div id="credits">
+            <div id="author">
+            By: Daniel Drozdov 
+            </div>
+            <div id="date">
+        </div>
     </div>
-    <div class = review>
-        <h3>Daniel D.</h3>
-        <p>Easily my favorite clothing store, I wish they would be open for more than a week each month though.</p>
+    <img id="header-image" src="images/atom.png" alt="header image">
+    </header>
+    <main>
+        <div class="package-container">
+            <header>
+                <h2 id = "p1-name"></h2>
+            </header>
+            <section>
+                <p id="p1-description"></p>
+            </section>
+            <footer>
+                <span id="p1-author"></span>
+                <span id="p1-downloads"></span>
+                <span id="p1-stars"></span>
+            </footer>
+        </div>
+        <div class="package-container"></div>
+        <header>
+            <h2 id="p2-name"></h2>
+        </header>
+        <section>
+            <p id="p2-description"></p>
+        </section>
+        <footer>
+            <span id="p2-author"></span>
+            <span id="p2-downloads"></span>
+            <span id="p2-stars"></span>
+        </footer>
     </div>
     </main>
-    <footer>
 
-    </footer>
-    <script src="js/scripts.js"></script>
+    <script src="js/scripts.js" charset="utf-8"></script>
     </body>
 </html>
