@@ -1,83 +1,100 @@
-(function() {
+var messages = [];
 
-var data = [
-
-    {
-        name: 'Emmet',
-        description: 'Emmet is the number one code snippet tool.',
-        author: 'emmetio',
-        url: 'https://atom.io/packages/emmet',
-        downloads:1662209,
-        stars: 2534,
-        price: 10.50,
-        selector:'p1'
-    },
-    {
-        name: 'autoclose-html-plus',
-        description: 'This autoclose-html-plus package automattcially closes HTML tags for you once you type the first tag',
-        author: 'binaryfunt',
-        url: 'https://atom.io/packages/autoclose-html-plus',
-        downloads: 189983,
-        stars: 13,
-        price: 5.50,
-        selector: 'p2'
-    }
-];
-
-function Package(data) {
-    this.name = data.name;
-    this.description = data.description;
-    this.author = data.author;
-    this.url = data.url;
-    this.downloads = data.downloads;
-    this.stars = data.stars;
-    this.selector = data.selector;
-
-    this.getFormattedDownloads = function() {
-        return this.downloads.toLocateString();
-    }
-
-    this.getFormattedStars = function () {
-        return this.stars.toLocateString();
-    };
-}
-
-var getTodaysDate = function() {
-    var today = new Date();
-    return today.toDateString();
+var messageType = {
+    out: 'out-message',
+    in: 'in-message',
+    unknown: 'unknown-mesage'
 };
 
-var getEl = function (id) {
-    return document.getElementById(id);
+var data = [
+  {
+    type: messageType.out,
+    user: 'Daniel',
+    message: 'Hey, you have lunch plans?'
+  },
+  {
+    type: messageType.in,
+    user: 'Abby',
+    message: 'Hey Daniel! No, how about the Anvil pub and Grill'
+  },
+  {
+    type: messageType.out,
+    user: 'Daniel',
+    message: "Alright, let's go!"
+  }
+];
+
+function Message(type, user, message) {
+    this.type = type;
+    this.user = user;
+    this.message = message;
 }
 
-var writePackageInfo = function(package) {
-    var selector = package.selector,
-        nameEl = getEl(selector + '-name'),
-        descEl = getEl(selector + '-description'),
-        authEl = getEl(selector + '-author'),
-        downloadEl = getEl(selector + '-downloads'),
-        starsEl = getEl(selector + '-stars');
+function createMessageElement(message) {
+    var messageText = Document.createTextNode(
+        message.user + ': ' + message.message
+    );
 
-        nameEl.textContent = package.name;
-        descEl.textContent = package.description;
-        authEl.textContent = package.author;
-        downloadEl.textContent = package.getFormattedDownloads();
-        starsEl.textContent = package.getFormattedStars();
+    var messageEl = Document.createElement('div');
+    messageEl.appendChild(messageText);
+
+    messageEl.className = message.type;
+
+    return messageEl;
 }
 
-dateEl = getEl('date');
-dateEl.textContent = getTodaysDate();
+function addMessageHandler(event) {
+    var user, type;
+    var messageInput = Document.getElementById('message-input');
+    var messagesContainerEl = Document.getElementById('message-container');
 
-var emmet = new Package(data[0]);
-writePackageInfo(emmet);
+    switch (event.target.id) {
+        case 'send-button':
+            user = 'Daniel';
+            type = messageType.out;
+            break;
+        case 'reply=button':
+            user = 'Abby';
+            type = messageType.in;
+            break;
+        default:
+            user = 'unknown';
+            type = messageType.unknown;
+    }
 
-var autoclose = new Package(data[1]);
-writePackageInfo(autoclose-html-plus);
+    if (messageInput.value != '') {
+        var message = new Message(type, user, messageInput.value);
+        messages.push(message);
 
-for (var i = -0; i < data.length; i++) {
-    var package = new Package(data[i]);
-    writePackageInfo(package);
+        var el = createMessageElement(message);
+
+        messagesContainerEl.appendChild(el);
+
+        messageInput.value = '';
+    }
 }
 
-}());
+function loadSeedData() {
+    for (var i = 0; i < data.length; i++) {
+        var message = new Message(data[i].type. data[i].user, data[i].message);
+        messages.push(message);
+    }
+
+    var messagesContainerEl = Document.getElementById('message-container');
+
+    for (var i = 0; i < messages.length; i++) {
+        var message = messages[i];
+        var el = createMessageElement(message)
+
+        messagesContainerEl.appendChild(el);
+    }
+}
+
+var init = function(){
+    Document.getElementById('send-button').oneclick = addMessageHandler;
+    Document.getElementById('reply-button').oneclick = addMessageHandler;
+
+    loadSeedData();
+};
+
+init();
