@@ -1,19 +1,30 @@
-body{
-    font-family: 'Open Sans', 'sans-serif';
-    max-width: 500px;
-    margin: 0 auto;
+body {
+    font-family: 'Open Sans', sans-serif;
+    margin: auto 30px;
+    color: #555;
 }
 
-.messages {
-    margin-bottom: 20px;
+ul {
+    margin: 0;
+
 }
 
-.out-messages {
-    padding: 5px;
-    background-color: aqua;
+li{
+    padding: 5px
+
 }
 
-.in-messages {
-    padding: 5px;
-    background-color: aquamarine;
+#todo-list-container{
+    margin-top: 20px
+
+}
+
+#completed-list {
+    list-style-type: none;
+
+}
+
+#compltete-list li{ 
+    text-decoration: line-through;
+
 }

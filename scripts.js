@@ -1,100 +1,70 @@
-var messages = [];
+var tasks = [];
 
-var messageType = {
-    out: 'out-message',
-    in: 'in-message',
-    unknown: 'unknown-mesage'
+var taskStatus = {
+    active: 'active',
+    completed: 'completed'
 };
 
-var data = [
-  {
-    type: messageType.out,
-    user: 'Daniel',
-    message: 'Hey, you have lunch plans?'
-  },
-  {
-    type: messageType.in,
-    user: 'Abby',
-    message: 'Hey Daniel! No, how about the Anvil pub and Grill'
-  },
-  {
-    type: messageType.out,
-    user: 'Daniel',
-    message: "Alright, let's go!"
-  }
-];
-
-function Message(type, user, message) {
-    this.type = type;
-    this.user = user;
-    this.message = message;
+function Task (id, name, status) {
+    this.id = id;
+    this.name = name;
+    this.status = status;
 }
 
-function createMessageElement(message) {
-    var messageText = Document.createTextNode(
-        message.user + ': ' + message.message
-    );
+function addTaskElement (task) {
 
-    var messageEl = Document.createElement('div');
-    messageEl.appendChild(messageText);
+    var listEl = document.getElementById('active-list');
+    var taskEl = document.createElement('li');
+    var textEl = document.createTextNode(task.name);
 
-    messageEl.className = message.type;
+    taskEl.setAttribute('id', task.id);
 
-    return messageEl;
+    taskEl.appendChild(textEl);
+
+    listEl.appendChild(taskEl);
 }
 
-function addMessageHandler(event) {
-    var user, type;
-    var messageInput = Document.getElementById('message-input');
-    var messagesContainerEl = Document.getElementById('message-container');
+function addTask (event) {
+    var inputEl = document.getElementById('input-task');
+    if (inputEl.value != '') {
+        var id = 'item-' + tasks.length;
 
-    switch (event.target.id) {
-        case 'send-button':
-            user = 'Daniel';
-            type = messageType.out;
+        var task = new Task(id, inputEl.value, taskStatus.active);
+        tasks.push(task);
+
+        addTaskElement(task);
+
+        inputEl.value = '';        
+    }
+}
+
+function completeTask(event) {
+    var taskEl = event.target;
+    var id = taskEl.id;
+
+    for (var i = 0; i < tasks.length; i++) {
+        if(tasks[i].id === id) {
+            tasks[i].status = taskStatus.completed;
             break;
-        case 'reply=button':
-            user = 'Abby';
-            type = messageType.in;
-            break;
-        default:
-            user = 'unknown';
-            type = messageType.unknown;
+        }
     }
 
-    if (messageInput.value != '') {
-        var message = new Message(type, user, messageInput.value);
-        messages.push(message);
+    taskEl.remove();
+    document.getElementById('completed-list').appendChild(taskEl);
+}
 
-        var el = createMessageElement(message);
-
-        messagesContainerEl.appendChild(el);
-
-        messageInput.value = '';
+function clickButton (event) {
+    if(event.keyCode === 13) {
+        document.getElementById('add-task').click();
     }
 }
 
-function loadSeedData() {
-    for (var i = 0; i < data.length; i++) {
-        var message = new Message(data[i].type. data[i].user, data[i].message);
-        messages.push(message);
-    }
+function init(){
+    document.getElementById('add-task').onclick = addTask;
 
-    var messagesContainerEl = Document.getElementById('message-container');
+    document.getElementById('active-list').onclick = completeTask;
 
-    for (var i = 0; i < messages.length; i++) {
-        var message = messages[i];
-        var el = createMessageElement(message)
-
-        messagesContainerEl.appendChild(el);
-    }
+    document.getElementById('input-task').onkeypress = clickButton;
 }
-
-var init = function(){
-    Document.getElementById('send-button').oneclick = addMessageHandler;
-    Document.getElementById('reply-button').oneclick = addMessageHandler;
-
-    loadSeedData();
-};
 
 init();
