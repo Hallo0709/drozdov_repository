@@ -1,52 +1,70 @@
-function get(element) {
-    return document.getElementById(element);
+var tasks = [];
+
+var taskStatus = {
+    active: 'active',
+    completed: 'completed'
+};
+
+function Task (id, name, status) {
+    this.id = id;
+    this.name = name;
+    this.status = status;
 }
 
-function openModal() {
-    var modal = get('modal-dialog');
-    var backdrop = get('modal-backdrop');
+function addTaskElement (task) {
 
-    modal.classList.add('visible');
-    backdrop.classList.add('visible');
+    var listEl = document.getElementById('active-list');
+    var taskEl = document.createElement('li');
+    var textEl = document.createTextNode(task.name);
+
+    taskEl.setAttribute('id', task.id);
+
+    taskEl.appendChild(textEl);
+
+    listEl.appendChild(taskEl);
 }
 
-function closeModal() {
-    var title = get('edit-title-text');
-    var text = get('edit-content-text');
-    var modal = get('modal-dialog');
-    var backdrop = get('modal-backdrop');
+function addTask (event) {
+    var inputEl = document.getElementById('input-task');
+    if (inputEl.value != '') {
+        var id = 'item-' + tasks.length;
 
-    title.value = '';
-    text.value = '';
+        var task = new Task(id, inputEl.value, taskStatus.active);
+        tasks.push(task);
 
-    modal.classList.remove('visible');
-    backdrop.classList.remove('visible');
+        addTaskElement(task);
+
+        inputEl.value = '';        
+    }
 }
 
-function saveContent(){
-    var title = get('edit-title-text');
-    var text = get('edit-content-text');
-    var content = get('display-content');
+function completeTask(event) {
+    var taskEl = event.target;
+    var id = taskEl.id;
 
-    var newTitle = document.createElement('h2');
-    var newTitleText = document.createTextNode(title.value);
-    var newContent = document.createElement('p');
-    var newContentText = document.createTextNode(text.value);
+    for (var i = 0; i < tasks.length; i++) {
+        if(tasks[i].id === id) {
+            tasks[i].status = taskStatus.completed;
+            break;
+        }
+    }
 
-    newTitle.appendChild(newTitleText);
-    newContent.appendChild(newContentText);
-    content.appendChild(newTitle);
-    content.appendChild(newContent);
-
-    closeModal();
+    taskEl.remove();
+    document.getElementById('completed-list').appendChild(taskEl);
 }
 
-window.addEventListener('load', function() {
-    var newButton = get('new-button');
-    var cancelButton = get('cancel-button');
-    var saveButton = get('save-button');
+function clickButton (event) {
+    if(event.keyCode === 13) {
+        document.getElementById('add-task').click();
+    }
+}
 
-    newButton.addEventListener('click', openModal);
-    cancelButton.addEventListener('click', closeModal);
-    saveButton.addEventListener('click', saveContent);
-});
+function init(){
+    document.getElementById('add-task').onclick = addTask;
+
+    document.getElementById('active-list').onclick = completeTask;
+
+    document.getElementById('input-task').onkeypress = clickButton;
+}
+
+init();
